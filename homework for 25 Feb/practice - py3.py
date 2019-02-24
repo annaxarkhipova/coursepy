@@ -10,7 +10,7 @@ class Practice:
                 if a % i == 0:
                     prime = False
             if prime:
-                print (a, '- prime')
+                print ('{} - prime'.format(a))
         return
     is_prime()
 
@@ -28,14 +28,7 @@ class Practice:
     def wave():
         word = 'hello'
         for i in range(len(word)):
-            update = word[i].upper()
-            a = word[1:]
-            print(update + a)
-
-        # wave("hello") = > ["Hello", "hEllo", "heLlo", "helLo", "hellO"]
-
-
-
+            print(word[:i] + word[i].upper() + word[i + 1:])
         return
     wave()
 
