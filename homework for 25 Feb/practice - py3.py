@@ -27,11 +27,10 @@ class Practice:
 
     def wave():
         word = 'hello'
-        if word.startswith(word[0].upper()) == False:
-            update = word[0].upper()
+        for i in range(len(word)):
+            update = word[i].upper()
             a = word[1:]
             print(update + a)
-
 
         # wave("hello") = > ["Hello", "hEllo", "heLlo", "helLo", "hellO"]
 
