@@ -29,11 +29,15 @@ class Money:
         return self.penny_count() + other.penny_count()
         # сложение - penny count 330  и penny count 495
 
-    def __gt__(self, other):
-        return self.x > self.y
-
     def __eq__(self, other):
-        return self.x == self.y
+        return self.x == other.x and self.y == other.y
+
+    def __gt__(self, other):
+        return self.x > other.y and self.x > other.y
+
+    def __float__(self):
+        return self.penny_count()
+
 
 
 m1 = Money(3, 30)
@@ -50,11 +54,9 @@ m3 = m1 + m2
 print('Мы получили {}'.format(m3))
 # на экране появится "Мы получили 8руб. 25 коп."
 
-
-
-# if m1 == m2:
-#     print('{} и {} равны'.format(m1, m2)
-# elif m1 > m2:
-#     print('{} больше чем {}'.format(m1, m2)
-# else:
-#     print('{} меньше чем {}'.format(m1, m2)
+if m1 == m2:
+    print('{} и {} равны'.format(m1, m2)
+elif m1 > m2:
+    print('{} больше чем {}'.format(m1, m2)
+else:
+    print('{} меньше чем {}'.format(m1, m2)
