@@ -1,3 +1,4 @@
+import os
 
 
 def foo(s):
@@ -23,21 +24,29 @@ def bar(l):
 res = bar(l)
 print(res)
 
-# При создании объекта должны приниматься значение оси X и значение оси Y.
-# Класс должен иметь метод, который возращает число от 1 до 4,
-# тем самым показывая, в каком участке находится точка.
 
-# class Coordinate:
-#      def __init__(self, x, y):
-#           self.x = x
-#           self.y = y
-#
-#
-#
-#
-#
-# k = Coordinate()
-# print(k)
+class Coordinate:
+
+     def __init__(self, file):
+          self.file = file
+
+     def read(self):
+          reading = open(self.file, 'r')
+          a = reading.read()
+          reading.close()
+          return a
+
+     def write(self):
+          y = open(self.file, 'w')
+          y.write('Yra!')
+          y.close()
+          return
+
+     def info(self):
+          return os.get_terminal_size(self.file)
+
+
+print(Coordinate('Desktop/py.py'))
 
 
 
