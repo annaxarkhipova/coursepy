@@ -50,18 +50,6 @@ print(Coordinate('Desktop/py.py'))
 
 
 
-def count_symbol(new, some):
-     count = 0
-     for word in new.lower().split():
-          if word == some:
-               count += 1
-               return count
-
-new, some = count_symbol('Hi, Bill, i am home!', 'i')
-print(new, some)
-
-
-
 def to_title(name):
      name = ' '.join(word[0].upper() + word[1:] for word in name.split())
      return name
