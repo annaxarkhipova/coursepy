@@ -1,9 +1,4 @@
 
-import argparse
-import sys
-import os
-import datetime
-
 
 # Во втором задании вам необходимо написать консольную утилиту.
 
