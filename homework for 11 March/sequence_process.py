@@ -33,9 +33,9 @@ def is_prime_number(x):
 
 
 
-v = int(time.time())
+v = time.time()
 
-for i in range(3):
+for i in range(5):
     odd_primes(10000, 2)
     odd_primes(20000, 10001)
     odd_primes(30000, 20001)

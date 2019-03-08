@@ -38,7 +38,7 @@ v = int(time.time())
 
 threads = []
 
-for i in range(3):
+for i in range(1):
     thr1 = threading.Thread(target=odd_primes, args=(i, )).start()
     thr2 = threading.Thread(target=odd_primes, args=(i, )).start()
     thr3 = threading.Thread(target=odd_primes, args=(i, )).start()
