@@ -8,39 +8,39 @@
 
 import time
 
+
+
 def odd_primes(end, start):
-    print('Старт вычислений №{}'.format(end, start))
+    print('Старт вычислений, начиная с {}'.format(end))
 
-    def odd_primes(end, start):
-        primes = []
-        for a in range(end, start, -1):
-            if is_prime_number(a):
-                primes.append(a)
-        return primes
+    primes = []
+    for a in range(end, start, -1):
+        if is_prime_number(a):
+            primes.append(a)
+    return primes
 
-    def is_prime_number(x):
-        if x >= 2:
-            for y in range(2, x):
-                if not (x % y):
-                    return False
-        else:
-            return False
-        return True
+def is_prime_number(x):
+    if x >= 2:
+        for y in range(2, x):
+            if not (x % y):
+                return False
+    else:
+        return False
+    return True
 
-    print(odd_primes(10000, 2))
-    print(odd_primes(20000, 10001))
-    print(odd_primes(30000, 20001))
-
-
-    print('Конец')
+odd_primes(10000, 2)
+odd_primes(20000, 10001)
+odd_primes(30000, 20001)
 
 
-start = time.time()
+print('Конец')
 
+
+v = int(time.time())
 # считаем что-то много раз с разными параметрами
 for i in range(3):
-    odd_primes(i, start)
+    print(odd_primes(i, v))
 
-print('Общее время вычислений в секундах: {}'.format(int(time.time() - start)))
+print('Общее время вычислений в секундах: {}'.format(int(time.time() - v)))
 
 
