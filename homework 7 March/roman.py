@@ -35,7 +35,7 @@ def to_roman(inp):
 
 if __name__ == '__main__':
     s = int(input('Put number: '))
+    if not isisnctance (s,int) and s > 5000:
+        raise ValueError
     if s in range(1,5000):
         print(to_roman(s))
-    elif s > 5000 or str:
-        raise TypeError('NonValidInput')
