@@ -17,7 +17,10 @@ def odd_primes(end, start):
     for a in range(end, start, -1):
         if is_prime_number(a):
             primes.append(a)
+    print('Конец')
+
     return primes
+
 
 def is_prime_number(x):
     if x >= 2:
@@ -28,18 +31,14 @@ def is_prime_number(x):
         return False
     return True
 
-odd_primes(10000, 2)
-odd_primes(20000, 10001)
-odd_primes(30000, 20001)
-
-
-print('Конец')
 
 
 v = int(time.time())
-# считаем что-то много раз с разными параметрами
+
 for i in range(3):
-    print(odd_primes(i, v))
+    odd_primes(10000, 2)
+    odd_primes(20000, 10001)
+    odd_primes(30000, 20001)
 
 print('Общее время вычислений в секундах: {}'.format(int(time.time() - v)))
 
