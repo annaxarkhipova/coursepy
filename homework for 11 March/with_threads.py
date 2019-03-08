@@ -26,21 +26,24 @@ def is_prime_number(x):
     return True
 
 
-odd_primes(10000, 2)
-odd_primes(20000, 10001)
-odd_primes(30000, 20001)
+# odd_primes(10000, 2)
+# odd_primes(20000, 10001)
+# odd_primes(30000, 20001)
 
-print('Конец')
+
+    print('Конец')
 
 
 v = int(time.time())
 
 threads = []
-# считаем что-то много раз с разными параметрами
+
 for i in range(3):
-    thr = threading.Thread(target=odd_primes, args=(i, v))
-    thr.start()
-    threads.append(thr)
+    thr1 = threading.Thread(target=odd_primes, args=(i, )).start()
+    thr2 = threading.Thread(target=odd_primes, args=(i, )).start()
+    thr3 = threading.Thread(target=odd_primes, args=(i, )).start()
+
+    threads.append(thr1,thr2,thr3)
 
 for thr in threads:
     thr.join()
