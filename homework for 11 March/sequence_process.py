@@ -34,10 +34,10 @@ def is_prime_number(x):
 
 v = time.time()
 
-for i in range(3):
+for i in range(1):
     odd_primes(10000, 2)
-    # odd_primes(20000, 10001)
-    # odd_primes(30000, 20001)
+    odd_primes(20000, 10001)
+    odd_primes(30000, 20001)
 
 print('Общее время вычислений в секундах: {}'.format(int(time.time() - v)))
 

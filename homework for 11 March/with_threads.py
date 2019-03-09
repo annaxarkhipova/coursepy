@@ -2,11 +2,8 @@
 # но каждую в отдельной потоке с помощью  threading.Thread.
 # Не забудьте стартануть треды и дождаться их окончания.
 
+
 import threading
-import time
-
-
-from threading import Thread
 import time
 
 
@@ -18,11 +15,6 @@ def odd_primes(end, start):
         if is_prime_number(a):
             primes.append(a)
 
-    print('Конец вычислений')
-
-    return primes
-
-
 def is_prime_number(x):
     if x >= 2:
         for y in range(2, x):
@@ -30,24 +22,30 @@ def is_prime_number(x):
                 return False
     else:
         return False
-    return True
 
 
 v = time.time()
 
-
+threads = []
 for i in range(1):
-    thr1 = threading.Thread(target=odd_primes, args=(i, ))
-    thr2 = threading.Thread(target=odd_primes, args=(i, ))
-    thr3 = threading.Thread(target=odd_primes, args=(i, ))
+    thr = threading.Thread(target=odd_primes, args=(10000, 3))
 
+    thr1 = threading.Thread(target=odd_primes, args=(20000, 10001))
+
+    thr2 = threading.Thread(target=odd_primes, args=(30000, 20001))
+
+    thr.start()
     thr1.start()
     thr2.start()
-    thr3.start()
 
-    thr1.join()
-    thr2.join()
-    thr3.join()
+    threads.append(thr1)
+    threads.append(thr)
+    threads.append(thr2)
+
+for thr in threads:
+    thr.join()
+
+print('Конец вычислений')
 
 print('Общее время вычислений в секундах: {}'.format(int(time.time() - v)))
 
