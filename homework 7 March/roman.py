@@ -31,11 +31,22 @@ def to_roman(inp):
             c = inp - 10
             if c in h:
                 return res[9] + h.get(c)
+            if 30 > inp > 20:
+                return res[9]*2 + h.get(inp - 20)
+            # if inp > 30:
+            #     return res[9]*3 + h.get(inp - 30)
+
+    for q in range(3,40):
+        if inp > 30 and inp % q:
+            return res[9]*q + h.get(inp-30)
+
+
+
 
 
 if __name__ == '__main__':
     s = int(input('Put number: '))
-    if not isisnctance (s,int) and s > 5000:
+    if not isinstance(s,int) and s > 5000:
         raise ValueError
     if s in range(1,5000):
         print(to_roman(s))
