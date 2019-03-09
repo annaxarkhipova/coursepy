@@ -6,6 +6,8 @@
 import threading
 import time
 
+v = time.time()
+
 
 def odd_primes(end, start):
     print('Старт вычислений, начиная с {}'.format(end))
@@ -14,6 +16,10 @@ def odd_primes(end, start):
     for a in range(end, start, -1):
         if is_prime_number(a):
             primes.append(a)
+
+
+    print('Конец вычислений c {}. Затраченo {} сек'.format(end, int(time.time() - v)))
+
 
 def is_prime_number(x):
     if x >= 2:
@@ -27,25 +33,25 @@ def is_prime_number(x):
 v = time.time()
 
 threads = []
-for i in range(1):
-    thr = threading.Thread(target=odd_primes, args=(10000, 3))
 
-    thr1 = threading.Thread(target=odd_primes, args=(20000, 10001))
+thr = threading.Thread(target=odd_primes, args=(10000, 3, ))
 
-    thr2 = threading.Thread(target=odd_primes, args=(30000, 20001))
+thr1 = threading.Thread(target=odd_primes, args=(20000, 10001, ))
 
-    thr.start()
-    thr1.start()
-    thr2.start()
+thr2 = threading.Thread(target=odd_primes, args=(30000, 20001, ))
 
-    threads.append(thr1)
-    threads.append(thr)
-    threads.append(thr2)
+thr.start()
+thr1.start()
+thr2.start()
 
-for thr in threads:
-    thr.join()
+threads.append(thr1)
+threads.append(thr)
+threads.append(thr2)
 
-print('Конец вычислений')
+
+thr.join()
+thr1.join()
+thr2.join()
 
 print('Общее время вычислений в секундах: {}'.format(int(time.time() - v)))
 
