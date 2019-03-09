@@ -33,8 +33,6 @@ def to_roman(inp):
                 return res[9] + h.get(c)
             if 30 > inp > 20:
                 return res[9]*2 + h.get(inp - 20)
-            # if inp > 30:
-            #     return res[9]*3 + h.get(inp - 30)
 
     for q in range(3,40):
         if inp > 30 and inp % q:
