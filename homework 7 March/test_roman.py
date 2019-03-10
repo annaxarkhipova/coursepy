@@ -1,5 +1,5 @@
 import unittest
-import roman
+from roman import to_roman
 
 
 class TestRoman(unittest.TestCase):
@@ -8,9 +8,14 @@ class TestRoman(unittest.TestCase):
         print('start testing')
 
 
-    def test_normal(self):
-        r = to_roman(30)
-        self.assertEqual(r, 'XXX')
+    def test_variety(self):
+        self.assertEqual(roman.to_roman(30), 'XXX')
+        self.assertEqual(roman.to_roman(40), 'XXXX')
+        self.assertEqual(roman.to_roman(20), 'XX')
+
+    def test_err(self):
+        with self.assertRaises(ValueError):
+            roman.to_roman('string', 5001)
 
 
     def tearDown(self):
