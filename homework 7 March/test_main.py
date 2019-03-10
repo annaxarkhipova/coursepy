@@ -2,7 +2,6 @@
 import unittest
 import main
 
-
 class TestFizzBuzz(unittest.TestCase):
 
     def setUp(self):

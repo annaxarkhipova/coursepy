@@ -1,7 +1,3 @@
-
-
-
-
 import unittest
 import roman
 
@@ -13,7 +9,8 @@ class TestRoman(unittest.TestCase):
 
 
     def test_normal(self):
-        self.assertEqual(roman.to_roman(s == int # является ли int )
+        r = to_roman(30)
+        self.assertEqual(r, 'XXX')
 
 
     def tearDown(self):
