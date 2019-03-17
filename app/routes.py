@@ -3,15 +3,15 @@
 from flask import render_template, flash, redirect, url_for, send_from_directory
 from . import app
 from app.forms import LoginForm
-from flask_login import current_user, login_user
+from flask_login import current_user, login_user, login_required
 from app.models import User
 from flask_login import logout_user
 
 
 @app.route('/')
 @app.route('/index')
+@login_required
 def index():
-    user = {'username': ' Anna'}
     posts = [
         {
             'author': {'username': 'Roman'},
@@ -26,10 +26,10 @@ def index():
             'body': 'Definitely'
         }
     ]
-    return render_template('index.html', title='Home',  posts=posts) #user=user,
+    return render_template('index.html', title='Home',  posts=posts)
 
 # GET-запросы — возвращают информацию клиенту (браузер), POST - передают инфо серверу
-@app.route('/login', methods=['GET', 'POST'])# cообщаем Flask о необходимости принимать запросы
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -40,10 +40,7 @@ def login():
             flash('Invalid username or password')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
-        next_page = request.args.get('next')
-        if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('index')
-        return redirect(next_page)
+        return redirect(url_for('index'))
     return render_template('login.html', title='Sign In', form=form)
 
 @app.route('/logout')
