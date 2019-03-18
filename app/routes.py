@@ -16,6 +16,7 @@ def user(username):
     ]
     return render_template('user.html', user=user, posts=posts)
 
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -35,7 +36,7 @@ def index():
     ]
     return render_template('index.html', title='Home',  posts=posts)
 
-# GET-запросы — возвращают информацию клиенту (браузер), POST - передают инфо серверу
+# GET-запросы — возвращают инфo клиенту (браузер), POST - передают инфо серверу
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -54,4 +55,34 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+@app.route('/follow/<username>')
+@login_required
+def follow(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        flash('User {} not found.'.format(username))
+        return redirect(url_for('index'))
+    if user == current_user:
+        flash('You cannot follow yourself!')
+        return redirect(url_for('user', username=username))
+    current_user.follow(user)
+    db.session.commit()
+    flash('You are following {}!'.format(username))
+    return redirect(url_for('user', username=username))
+
+@app.route('/unfollow/<username>')
+@login_required
+def unfollow(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        flash('User {} not found.'.format(username))
+        return redirect(url_for('index'))
+    if user == current_user:
+        flash('You cannot unfollow yourself!')
+        return redirect(url_for('user', username=username))
+    current_user.unfollow(user)
+    db.session.commit()
+    flash('You are not following {}.'.format(username))
+    return redirect(url_for('user', username=username))
 

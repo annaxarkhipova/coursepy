@@ -8,11 +8,21 @@
         </tr>
 </table>
 
+
+<h1>{{ user.username }}</h1>
+    {% if user == current_user %}
+    <p>{{ user.followers.count() }} followers, {{ user.followed.count() }} following.</p>
+    {% else %}
+   <p><a href="{{ url_for('follow', username=user.username) }}">Follow</a></p>
+    {% endif %}
+
+
     <hr>
     {% for post in posts %}
     <p>
     {{ post.author.username }} says: <b>{{ post.body }}</b>
     </p>
     {% endfor %}
+
 
 {% endblock %}
