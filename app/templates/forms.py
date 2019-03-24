@@ -1,8 +1,9 @@
 
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SubmitField
+from wtforms import StringField, PasswordField, TextAreaField, SubmitField, BooleanField
 from wtforms.validators import DataRequired
+from app.models import Comment, User, Post
 
 class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
@@ -10,10 +11,13 @@ class PostForm(FlaskForm):
     send = SubmitField('Send')
 
 class LoginForm(FlaskForm):
-    username = StringField('Title', validators=[DataRequired()])
-    password = TextAreaField('Text', validators=[DataRequired()])
-    login = SubmitField('Log In')
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    submit = SubmitField('Log In')
+    remember_me = BooleanField('Remember me', default=False)
+
 
 class CommentForm(FlaskForm):
     text = TextAreaField('Text', validators=[DataRequired()])
     send = SubmitField('Send')
+
