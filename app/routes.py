@@ -44,7 +44,6 @@ def create():
 def index():
     form = PostForm()
     posts = Post.query.filter_by(body=form.text.data).first()
-    return redirect(url_for('index'))
     return render_template('index.html', title='Home', posts=posts)
 
 

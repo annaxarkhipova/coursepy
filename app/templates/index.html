@@ -4,10 +4,14 @@
 
 {% block content %}
 
+
+
+{% if current_user.username %}
 <h1>Hi, {{ current_user.username }}!</h1>
-    {% for post in posts %}
-    <h3>{{ post.title }}</h3>
-    <b>{{ post.body }}
+{% else %}
+<h1> Hi, Unknown User! </h1>
+{% endif %}
+
     <a href="/create">Создать пост</a></b>
 <section class="comment-section">
             <div v-for="comment in comments">
@@ -21,6 +25,4 @@
         <section class="form-section">
             <form class="form" @submit.prevent="addComment">
 
-    {% endfor %}
-
-{% endblock %}
+                {% endblock %}
