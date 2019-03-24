@@ -1,9 +1,11 @@
 
+
 from . import app
-from flask import render_template, flash, redirect, url_for, send_from_directory
-from app.forms import LoginForm
+from flask import render_template, flash, redirect, url_for
+from app.templates.forms import PostForm, CommentForm, LoginForm
 from flask_login import logout_user, current_user, login_user, login_required
-from app.models import User
+from app.models import User, Post, Comment
+
 
 
 @app.route('/user/<username>')
@@ -11,30 +13,42 @@ from app.models import User
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     posts = [
-        {'author': user, 'body': 'Hello everyone!'},
-        {'author': user, 'body': 'Today was good'}
-    ]
+        {'author': user, 'body': 'Hello everyone!'} ]
     return render_template('user.html', user=user, posts=posts)
+
+
+@app.route('/posts/{post_id}')
+def post(post_id):
+    post = Post.query.get(post_id)
+    render_template('post.html', post=post)
+
+
+@app.route('/create', methods=['GET', 'POST'])
+def create():
+    form = PostForm()
+    com = CommentForm()
+    if form.validate_on_submit():
+        p = Post(title=form.title.data, text=form.text.data)
+    if form.validate_on_submit():
+        c = Comment(content=com.content.data.strip(), post=post.get_current_object(),
+                               user=user.get_current_object())
+        db.session.add(p,c)
+        db.session.commit()
+        return redirect('/index')
+    return render_template('create_post.html', title='Sign In', form=form)
+
 
 
 @app.route('/')
 @app.route('/index')
 def index():
-    posts = [
-        {
-            'author': {'username': 'Roman'},
-            'body': 'Hi yall!'
-        },
-        {
-            'author': {'username': 'Jaykob'},
-            'body': 'Are you alright?'
-        },
-        {
-            'author': {'username': 'Tim'},
-            'body': 'Definitely'
-        }
-    ]
-    return render_template('index.html', title='Home',  posts=posts)
+    form = PostForm()
+    posts = Post.query.filter_by(body=form.text.data).first()
+    return redirect(url_for('index'))
+    return render_template('index.html', title='Home', posts=posts)
+
+
+
 
 # GET-запросы — возвращают инфo клиенту (браузер), POST - передают инфо серверу
 @app.route('/login', methods=['GET', 'POST'])
@@ -85,4 +99,3 @@ def unfollow(username):
     db.session.commit()
     flash('You are not following {}.'.format(username))
     return redirect(url_for('user', username=username))
-

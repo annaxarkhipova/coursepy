@@ -1,5 +1,6 @@
 
 
+
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import login
 from app import db
@@ -23,6 +24,7 @@ class User(UserMixin, db.Model):
                                secondaryjoin=(followers.c.followed_id == id),
                                backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
 
+
     def follow(self, user):
         if not self.is_following(user):
             self.followed.append(user)
@@ -33,6 +35,7 @@ class User(UserMixin, db.Model):
 
     def is_following(self, user):
         return self.followed.filter(self.followers.c.followed_id == user.id).count() > 0
+
 
     def followed_posts(self):
         return Post.query.join(
@@ -51,7 +54,6 @@ class User(UserMixin, db.Model):
         return 'https://pp.userapi.com/c845019/v845019144/1c861c/3XeARpgPEGo.jpg'.format(
             digest, size)
 
-
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
@@ -61,9 +63,27 @@ class Post(db.Model):
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+
+    #someone_likes = db.Table('someone_likes',
+     #                        db.Column('like', db.Integer, db.ForeignKey('user.id')),
+      #                       db.Column('likedby1', db.Integer, db.ForeignKey('user.id')))
+
+
 
     def __repr__(self):
         return '<Post {}>'.format(self.body)
+
+
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String(140))
+    created = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+
+    def __repr__(self):
+        return '<Comment {}>'.format(self.body)
 
 
 @login.user_loader
