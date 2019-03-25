@@ -3,6 +3,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField, SubmitField, BooleanField
 from wtforms.validators import DataRequired
+from datetime import datetime
+
 from app.models import Comment, User, Post
 
 class PostForm(FlaskForm):
@@ -16,8 +18,6 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Log In')
     remember_me = BooleanField('Remember me', default=False)
 
-
 class CommentForm(FlaskForm):
-    text = TextAreaField('Text', validators=[DataRequired()])
+    text = TextAreaField('Please leave your comment here', validators=[DataRequired()])
     send = SubmitField('Send')
-

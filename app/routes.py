@@ -5,6 +5,7 @@ from flask import render_template, flash, redirect, url_for
 from app.templates.forms import PostForm, CommentForm, LoginForm
 from flask_login import logout_user, current_user, login_user, login_required
 from app.models import User, Post, Comment
+from app import db
 from flask import request
 from werkzeug.urls import url_parse
 
@@ -21,20 +22,17 @@ def user(username):
 @app.route('/posts/{post_id}')
 def post(post_id):
     post = Post.query.get(post_id)
-    render_template('post.html', post=post)
+    return render_template('post.html', post=post)
 
 
 @app.route('/create', methods=['GET', 'POST'])
 def create():
     form = PostForm()
-    com = CommentForm()
+    c = CommentForm()
     if form.validate_on_submit():
-        p = Post(title=form.title.data, text=form.text.data)
-    if form.validate_on_submit():
-        c = Comment(content=com.content.data.strip(), post=post.get_current_object(),
-                               user=user.get_current_object())
-        db.session.add(p,c)
-        db.session.commit()
+        post = Post(title=form.title.data, body=form.text.data)
+    if c.validate_on_submit():
+        com = Comment(body=c.text.data)
         return redirect('/index')
     return render_template('create_post.html', title='Sign In', form=form)
 
