@@ -28,14 +28,19 @@ def post(post_id):
 @app.route('/create', methods=['GET', 'POST'])
 def create():
     form = PostForm()
-    c = CommentForm()
     if form.validate_on_submit():
         post = Post(title=form.title.data, body=form.text.data)
-    if c.validate_on_submit():
-        com = Comment(body=c.text.data)
-        return redirect('/index')
-    return render_template('create_post.html', title='Sign In', form=form)
+        db.session.add(post)
+        db.session.commit()
+        flash('Post published!')
+        return redirect('//user/<username>')
+    return render_template('create_post.html', title='New Post', form=form)
 
+    # com = CommentForm()
+    # if com.validate_on_submit():
+    #     com = Comment(body=c.text.data)
+    #     flash('Comment posted')
+    #     return redirect('/posts/{post_id}')
 
 
 @app.route('/')

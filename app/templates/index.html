@@ -1,6 +1,6 @@
 
 
-{% extends "base.html" %}
+{% extends "user.html" %}
 
 {% block content %}
 
@@ -8,21 +8,12 @@
 
 {% if current_user.username %}
 <h1>Hi, {{ current_user.username }}!</h1>
+                <a href="/create">Создать пост</a></b>
+
 {% else %}
 <h1> Hi, Unknown User! </h1>
 {% endif %}
 
-    <a href="/create">Создать пост</a></b>
-<section class="comment-section">
-            <div v-for="comment in comments">
-               <comment
-                    :comment="comment"
-                    v-bind:key="comment.id"
-                >
-                </comment>
-            </div>
-        </section>
-        <section class="form-section">
-            <form class="form" @submit.prevent="addComment">
 
-                {% endblock %}
+
+{% endblock %}
