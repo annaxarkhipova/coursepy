@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<body>
+    <h1>Send a message to:</h1>
+
+    <form action="" method="followers" novalidate>
+        <select size="4" multiple name="username">
+        <option> {{ user.followers }} </option>
+        <option> {{ user.followers }} </option>
+        </select>
+    </form>
+
+
+    <form action="" method="message" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.text.label }}<br>
+            {{ form.text() }}
+        </p>
+        <p>{{ form.send() }}</p>
+    </form>
+
+
+</body>
+{% endblock %}

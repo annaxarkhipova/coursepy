@@ -1,19 +1,20 @@
 
 
-{% extends "user.html" %}
+{% extends "base.html" %}
 
 {% block content %}
 
 
-
 {% if current_user.username %}
 <h1>Hi, {{ current_user.username }}!</h1>
-                <a href="/create">Создать пост</a></b>
 
 {% else %}
 <h1> Hi, Unknown User! </h1>
 {% endif %}
 
+<p><br><a href="{{ url_for('send_message') }}">Send a message</a>
+</br></p>
+<a href="/create">Publish post</a>
 
 
 {% endblock %}

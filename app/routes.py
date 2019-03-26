@@ -2,12 +2,20 @@
 
 from . import app
 from flask import render_template, flash, redirect, url_for
-from app.templates.forms import PostForm, CommentForm, LoginForm
+from app.templates.forms import PostForm, CommentForm, LoginForm, MessageForm
 from flask_login import logout_user, current_user, login_user, login_required
-from app.models import User, Post, Comment
+from app.models import User, Post, Comment, Message
 from app import db
 from flask import request
 from werkzeug.urls import url_parse
+
+
+@app.route('/')
+@app.route('/index')
+def index():
+    form = PostForm()
+    posts = Post.query.filter_by(body=form.text.data).first()
+    return render_template('index.html', title='Home', posts=posts)
 
 
 @app.route('/user/<username>')
@@ -26,6 +34,7 @@ def post(post_id):
 
 
 @app.route('/create', methods=['GET', 'POST'])
+@login_required
 def create():
     form = PostForm()
     if form.validate_on_submit():
@@ -33,7 +42,7 @@ def create():
         db.session.add(post)
         db.session.commit()
         flash('Post published!')
-        return redirect('//user/<username>')
+        return redirect('/user/<username>')
     return render_template('create_post.html', title='New Post', form=form)
 
     # com = CommentForm()
@@ -43,13 +52,17 @@ def create():
     #     return redirect('/posts/{post_id}')
 
 
-@app.route('/')
-@app.route('/index')
-def index():
-    form = PostForm()
-    posts = Post.query.filter_by(body=form.text.data).first()
-    return render_template('index.html', title='Home', posts=posts)
-
+@app.route('/send', methods=['GET', 'POST'])
+@login_required
+def send_message():
+    forma = MessageForm()
+    if forma.validate_on_submit():
+        message = Message(body=forma.body.data)
+        db.session.add(message)
+        db.session.commit()
+        flash('Message sent')
+        return redirect('user/<username>')
+    return render_template('create_message.html', title='Message', form=forma)
 
 
 
@@ -89,7 +102,8 @@ def follow(username):
     current_user.follow(user)
     db.session.commit()
     flash('You are following {}!'.format(username))
-    return redirect(url_for('user', username=username))
+    return redirect('/user/<username>', username=username)
+
 
 @app.route('/unfollow/<username>')
 @login_required

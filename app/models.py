@@ -34,14 +34,7 @@ class User(UserMixin, db.Model):
             self.followed.remove(user)
 
     def is_following(self, user):
-        return self.followed.filter(self.followers.c.followed_id == user.id).count() > 0
-
-
-    def followed_posts(self):
-        return Post.query.join(
-            self.followers, (self.followers.c.followed_id == Post.user_id)).filter(
-            self.followers.c.follower_id == self.id).order_by(
-            Post.timestamp.desc())
+        return self.followed.filter(self.followers.c.followed_id == user.id).all()
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -56,6 +49,21 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
+
+
+
+
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String(300))
+    created = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    message_id = db.Column(db.Integer, db.ForeignKey('message.id'))
+
+    def __repr__(self):
+        return '<Message {}>'.format(self.body)
+
+
+
 
 
 class Post(db.Model):
