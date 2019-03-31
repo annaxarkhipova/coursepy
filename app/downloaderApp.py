@@ -12,7 +12,7 @@ app = Celery('Pogoda',
 
 
 @app.task
-def download(url, filename):
+def upload_pogoda(url, filename):
     """
     Download a page and save it to the BASEDIR directory
       url: the url to download

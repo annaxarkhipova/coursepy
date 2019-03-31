@@ -1,6 +1,5 @@
 
 
-
 import os
 from pathlib import Path
 
@@ -8,6 +7,8 @@ from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+
+
 
 PROJECT_DIR = Path(__file__).absolute().parent.parent
 
@@ -24,5 +25,9 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
+
+
+
+
 
 from . import routes, models
