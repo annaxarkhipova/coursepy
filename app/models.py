@@ -53,7 +53,6 @@ class User(UserMixin, db.Model):
 
 
 
-
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(300))
@@ -64,26 +63,19 @@ class Message(db.Model):
         return '<Message {}>'.format(self.body)
 
 
-
-
-
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(140))
-    body = db.Column(db.String(140))
+    body = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
 
-    #someone_likes = db.Table('someone_likes',
-     #                        db.Column('like', db.Integer, db.ForeignKey('user.id')),
-      #                       db.Column('likedby1', db.Integer, db.ForeignKey('user.id')))
+    #someone_likes_it = db.Column('like', db.Integer, db.ForeignKey('user.id'))
+    #post_liked_by = db.Column('likedby1', db.Integer, db.ForeignKey('user.id')))
 
 
 
     def __repr__(self):
         return '<Post {}>'.format(self.body)
-
 
 
 class Comment(db.Model):

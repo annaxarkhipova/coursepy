@@ -29,12 +29,38 @@ Draft
 #  --- --- ---
 
 
-num = int(input('Введите число: '))
+# num = int(input('Введите число: '))
+#
+#
+# a = '---'
+# b = '|'
+# if num <= 100:
+#     for space in range(num):
+#             print((b + '\n' + ' ' + a) + (' ' + b))
 
 
-a = '---'
-b = '|'
-if num <= 100:
-    for space in range(num):
-            print((b + '\n' + ' ' + a) + (' ' + b))
+# import math
+#
+# # def graph(foo, b):
+# b = [9, 25, 100]
+# res = '#'
+#
+# for i in b:
+#     foo = math.sqrt(int(i))
+#     if i > 1:
+#         pics = res * int(i)
+#         print(i,':', pics)
 
+# graph(math.sqrt, [9, 25, 100])
+
+
+
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(7,5))
+x = [18, 15, 11, 9, 8, 6]
+labels = ['Java', 'C', 'C++', 'PHP', '(Visual) Basic', 'Python']
+explode = [0, 0, 0, 0, 0, 0.2]
+
+plt.pie(x, labels = labels, explode=explode, autopct='%1.1f%%', shadow=True);
+plt.show()

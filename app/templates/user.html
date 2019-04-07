@@ -7,27 +7,32 @@
         </tr>
 </table>
 
-
-<h1>{{ user.username }}</h1>
+ <p>
     {% if user == current_user %}
+<p class="content-section">
+      <div class="media">
+        <img class="rounded-circle account-img" src="{{ image_file }}">
+        <div class="media-body">
+          <h2 class="account-heading">{{ current_user.username }}</h2>
+          <p class="text-secondary">{{ current_user.email }}</p>
+        </div>
+      </div>
     <p>{{ user.followers.count() }} followers, {{ user.followed.count() }} following.</p>
     {% else %}
    <p><a href="{{ url_for('follow', username=user.username) }}">Follow</a></p>
    <p><a href="{{ url_for('unfollow', username=user.username) }}">Unfollow</a></p>
-
+</p>
     {% endif %}
 
 
     <hr>
     {% for post in posts %}
     <p>
-    {{ post.author.username }} says: <b>{{ post.body }}</b>
+<!--        <b> {{ post.author.username }} </b>-->
+        {{ post.body }}
     </p>
     {% endfor %}
     </hr>
-
-   <p><a href="{{ url_for('send_message', username=user.username) }}">Send a message</a></p>
-
 
 
 {% endblock %}

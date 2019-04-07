@@ -1,31 +1,15 @@
 from celery import Celery
 import urllib.request
 from bs4 import BeautifulSoup
+from flask import Flask
 
-
+app = Flask(__name__)
 
 app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
 app.config['CELERY_RESULT_BACKEND'] = 'redis://localhost:6379/0'
 
 celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
 celery.conf.update(app.config)
-
-@celery.task
-def implement_weather(url):
-    response = urllib.request.urlopen(url)
-    return response.read()
-
-def parse(html):
-    soup = BeautifulSoup(html)
-    weather_today = soup.find(class_='fact')
-    print(weather_today.prettify())
-
-def main():
-    parse(implement_weather('https://p.ya.ru/nizhny-novgorod'))
-
-# task = implement_weather.apply_async(args=[10, 20], countdown=1200)
-
-
 
 
 def make_celery(app):
@@ -43,3 +27,16 @@ def make_celery(app):
 
     celery.Task = ContextTask
     return celery
+
+@celery.task
+def implement_weather(url):
+    response = urllib.request.urlopen(url)
+    return response.read()
+
+def parse(html):
+    soup = BeautifulSoup(html)
+    weather_today = soup.find(class_='fact')
+    print(weather_today.prettify())
+
+def main():
+    parse(implement_weather.apply_async('https://p.ya.ru/nizhny-novgorod', countdown=1200))

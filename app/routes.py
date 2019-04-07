@@ -8,42 +8,29 @@ from app.models import User, Post, Comment, Message
 from app import db
 from flask import request
 from werkzeug.urls import url_parse
+from flask_mail import Mail, Message
 
 
 @app.route('/')
 @app.route('/index')
 def index():
     form = PostForm()
-    posts = Post.query.filter_by(body=form.text.data).first()
+    posts = Post.query.filter_by(body=form.text.data).all()
     return render_template('index.html', title='Home', posts=posts)
 
 
 @app.route('/user/<username>')
 @login_required
 def user(username):
-    user = User.query.filter_by(username=username).first_or_404()
-    posts = [
-        {'author': user, 'body': 'Hello everyone!'} ]
-    return render_template('user.html', user=user, posts=posts)
+    user = User.query.filter_by(username=username).first()
+    return render_template('user.html', user=user)
 
 
-@app.route('/posts/{post_id}')
-def post(post_id):
-    post = Post.query.get(post_id)
-    return render_template('post.html', post=post)
+# @app.route('/posts/{post_id}')
+# def post(post_id):
+#     post = Post.query.get(post_id)
+#     return render_template('post.html', post=post)
 
-
-@app.route('/create', methods=['GET', 'POST'])
-@login_required
-def create():
-    form = PostForm()
-    if form.validate_on_submit():
-        post = Post(title=form.title.data, body=form.text.data)
-        db.session.add(post)
-        db.session.commit()
-        flash('Post published!')
-        return redirect('/user/<username>')
-    return render_template('create_post.html', title='New Post', form=form)
 
     # com = CommentForm()
     # if com.validate_on_submit():
@@ -51,19 +38,34 @@ def create():
     #     flash('Comment posted')
     #     return redirect('/posts/{post_id}')
 
+@app.route("/create", methods=['GET', 'POST'])
+@login_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.text.data)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post has been created!')
+        return redirect(url_for('index'))
+    return render_template('create_post.html', title='New Post', form=form)
+
 
 @app.route('/send', methods=['GET', 'POST'])
 @login_required
 def send_message():
     forma = MessageForm()
+    mail = Mail(app)
     if forma.validate_on_submit():
-        message = Message(body=forma.body.data)
-        db.session.add(message)
+        message = Message(body=forma.text.data)
+        message_with_flaskmail = Message('Hello', recipients=['arkhipova-1997@yandex.ru'])
+        message_with_flaskmail.body = message
+        mail.send(message_with_flaskmail)
+        db.session.add(message_with_flaskmail)
         db.session.commit()
         flash('Message sent')
         return redirect('user/<username>')
     return render_template('create_message.html', title='Message', form=forma)
-
 
 
 # GET-запросы — возвращают инфo клиенту (браузер), POST - передают инфо серверу

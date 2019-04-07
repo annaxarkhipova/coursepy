@@ -1,6 +1,6 @@
 
-
 {% extends "base.html" %}
+
 {% block content %}
 <head>
     <meta charset="UTF-8">
@@ -8,12 +8,8 @@
 </head>
 <body>
     <h1>Create post:</h1>
-    <form action="" method="post" novalidate>
+  <form method="POST" action="">
         {{ form.hidden_tag() }}
-        <p>
-            {{ form.title.label }}<br>
-            {{ form.title(size=100) }}
-        </p>
         <p>
             {{ form.text.label }}<br>
             {{ form.text() }}
