@@ -14,6 +14,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+    posts = db.Column(db.Text)
 
     followers = db.Table('followers',
                          db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
@@ -68,6 +69,7 @@ class Post(db.Model):
     body = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+    username = db.Column(db.String(64), index=True, unique=True)
 
     #someone_likes_it = db.Column('like', db.Integer, db.ForeignKey('user.id'))
     #post_liked_by = db.Column('likedby1', db.Integer, db.ForeignKey('user.id')))
@@ -83,6 +85,7 @@ class Comment(db.Model):
     body = db.Column(db.String(140))
     created = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+    username = db.Column(db.String(64), index=True, unique=True)
 
     def __repr__(self):
         return '<Comment {}>'.format(self.body)

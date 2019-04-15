@@ -23,13 +23,10 @@ def index():
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first()
-    return render_template('user.html', user=user)
+    posts = User.query.filter_by(username=username).all()
+    return render_template('user.html', user=user, posts=posts)
 
 
-# @app.route('/posts/{post_id}')
-# def post(post_id):
-#     post = Post.query.get(post_id)
-#     return render_template('post.html', post=post)
 
 
     # com = CommentForm()
@@ -47,8 +44,14 @@ def new_post():
         db.session.add(post)
         db.session.commit()
         flash('Your post has been created!')
-        return redirect(url_for('index'))
+        return redirect(url_for('user', username=post.username))
     return render_template('create_post.html', title='New Post', form=form)
+
+
+@app.route('/posts/{post_id}')
+def post(post_id):
+    post = Post.query.get(post_id)
+    return render_template('post.html', post=post)
 
 
 @app.route('/send', methods=['GET', 'POST'])
@@ -58,7 +61,7 @@ def send_message():
     mail = Mail(app)
     if forma.validate_on_submit():
         message = Message(body=forma.text.data)
-        message_with_flaskmail = Message('Hello', recipients=['arkhipova-1997@yandex.ru'])
+        message_with_flaskmail = Message('Hello', recipients=['anna@myblog.com'])
         message_with_flaskmail.body = message
         mail.send(message_with_flaskmail)
         db.session.add(message_with_flaskmail)

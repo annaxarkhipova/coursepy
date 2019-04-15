@@ -23,16 +23,22 @@
    <p><a href="{{ url_for('unfollow', username=user.username) }}">Unfollow</a></p>
 </p>
     {% endif %}
-
-
+<br><a href="{{ url_for('send_message') }}">Send a message</a> </br>
+<a href="/create">Publish post</a>
     <hr>
+<p class="content-section">
+      <div class="media">
+        <img class="rounded-circle account-img" src="{{ image_file }}">
+        <div class="media-body">
+
+
+
     {% for post in posts %}
     <p>
-<!--        <b> {{ post.author.username }} </b>-->
-        {{ post.body }}
+        {{ user.posts }}
     </p>
     {% endfor %}
-    </hr>
 
+    </hr>
 
 {% endblock %}
