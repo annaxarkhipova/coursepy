@@ -9,6 +9,9 @@ from app import db
 from flask import request
 from werkzeug.urls import url_parse
 from flask_mail import Mail, Message
+import nexmo
+
+client = nexmo.Client(key='NEXMO_API_KEY', secret='NEXMO_API_SECRET')
 
 
 @app.route('/')
@@ -26,14 +29,13 @@ def user(username):
     posts = User.query.filter_by(username=username).all()
     return render_template('user.html', user=user, posts=posts)
 
-
-
-
     # com = CommentForm()
     # if com.validate_on_submit():
     #     com = Comment(body=c.text.data)
     #     flash('Comment posted')
     #     return redirect('/posts/{post_id}')
+
+
 
 @app.route("/create", methods=['GET', 'POST'])
 @login_required
@@ -44,9 +46,8 @@ def new_post():
         db.session.add(post)
         db.session.commit()
         flash('Your post has been created!')
-        return redirect(url_for('user', username=post.username))
+        return redirect(url_for('user'))
     return render_template('create_post.html', title='New Post', form=form)
-
 
 @app.route('/posts/{post_id}')
 def post(post_id):
@@ -58,17 +59,27 @@ def post(post_id):
 @login_required
 def send_message():
     forma = MessageForm()
-    mail = Mail(app)
     if forma.validate_on_submit():
         message = Message(body=forma.text.data)
-        message_with_flaskmail = Message('Hello', recipients=['anna@myblog.com'])
-        message_with_flaskmail.body = message
-        mail.send(message_with_flaskmail)
-        db.session.add(message_with_flaskmail)
+        response = client.send_message({'from': str(current_user), 'text': message})
+        response_text = response['messages'][0]
+        db.session.add(response_text)
         db.session.commit()
-        flash('Message sent')
-        return redirect('user/<username>')
+        if response['status'] == '0':
+            flash('Message sent')
+            return redirect('user/<username>')
     return render_template('create_message.html', title='Message', form=forma)
+
+
+        #     print('Message sent!' + response['message-id'])
+        # else:
+        #     print('Error:' + response['error-text'])
+
+
+    #     message_with_flaskmail = Message('Hello', recipients=['anna@myblog.com'])
+    #     message_with_flaskmail.body = message
+    #     mail.send(message_with_flaskmail)
+
 
 
 # GET-запросы — возвращают инфo клиенту (браузер), POST - передают инфо серверу

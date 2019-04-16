@@ -2,30 +2,31 @@
 
 {% block content %}
 
+    <h3>Send Message</h3>
+
 <body>
-    <h1>Send message to:</h1>
 
-    <form action="" method="followers" novalidate>
- <p><select name="list1">
-  <option>Choose user</option>
+<div class="container">
 
-  <option> {{ username }} </option>
-
- </select></p>
-</form>
-
-
-
-    <form action="" method="message" novalidate>
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.text.label }}<br>
-            {{ form.text() }}
-        </p>
-        <p>{{ form.send() }}</p>
+    <form method="POST" action="/send">
+        <label for="inputNumber" class="sr-only"> Phone Number </label>
+        <input type="number"  class="form-control" placeholder="Phone Number" >
+        <label for="inputMessage" class="sr-only"> Message </label>
+        <input type="text"  class="form-control" placeholder="Write a message..." >
     </form>
 
 
+    <form method="POST" action="/send" novalidate >
+        <a href="{{ url_for('send_message')}}" class="btn btn-light" style="display: block; margin-left: auto;"> Send </a>
+
+<!--        <button type="button" class="btn btn-light" style="display: block; margin-right: auto;"> Send </button>-->
+
+        <!--        <span class="spinner-grow spinner-grow-sm"></span> Loading..-->
+
+<!--       <p>{{ form.send() }}</p>-->
+    </form>
+
+</div>
 </body>
 
 {% endblock %}
