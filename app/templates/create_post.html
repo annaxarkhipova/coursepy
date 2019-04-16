@@ -3,30 +3,16 @@
 
 {% block content %}
 
-<h3><p>Create Post</p></h3>
-
+    <h3>Create post:</h3>
 <body>
 
-  <div class="container">
-
-    <form method="POST" action="/create">
-        <label for="inputPost" class="sr-only"> Posts </label>
-        <input type="post"  class="form-control" placeholder="What's new?" >
+  <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.text.label }}<br>
+            {{ form.text() }}
+        </p>
+        <p>{{ form.send() }}</p>
     </form>
-
- <form method="POST" action="/user" novalidate >
-        <a href="{{ url_for('user', username=username)}}" class="btn btn-light" style="display: block; margin-left: auto;"> Send </a>
- </form>
-
-<!--  <form method="POST" action="/create">-->
-<!--        {{ form.hidden_tag() }}-->
-<!--        <p>-->
-<!--            {{ form.text.label }}<br>-->
-<!--            {{ form.text() }}-->
-<!--        </p>-->
-<!--        <p>{{ form.send() }}</p>-->
-<!--    </form>-->
-  </div>
 </body>
-
 {% endblock %}
