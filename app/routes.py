@@ -61,13 +61,12 @@ def send_message():
     forma = MessageForm()
     if forma.validate_on_submit():
         message = Message(body=forma.text.data)
-        response = client.send_message({'from': str(current_user), 'text': message})
+        response = client.send_message({'from': 'Anna', 'to': '79877453117', 'text': message})
         response_text = response['messages'][0]
         db.session.add(response_text)
         db.session.commit()
         if response['status'] == '0':
-            flash('Message sent')
-            return redirect('user/<username>')
+            return redirect(url_for('user/<username>'))
     return render_template('create_message.html', title='Message', form=forma)
 
 
@@ -112,9 +111,6 @@ def follow(username):
     if user is None:
         flash('User {} not found.'.format(username))
         return redirect(url_for('index'))
-    if user == current_user:
-        flash('You cannot follow yourself!')
-        return redirect(url_for('user', username=username))
     current_user.follow(user)
     db.session.commit()
     flash('You are following {}!'.format(username))
@@ -128,9 +124,6 @@ def unfollow(username):
     if user is None:
         flash('User {} not found.'.format(username))
         return redirect(url_for('index'))
-    if user == current_user:
-        flash('You cannot unfollow yourself!')
-        return redirect(url_for('user', username=username))
     current_user.unfollow(user)
     db.session.commit()
     flash('You are not following {}.'.format(username))

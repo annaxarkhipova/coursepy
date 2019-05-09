@@ -16,27 +16,24 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     posts = db.Column(db.Text)
 
-    followers = db.Table('followers',
-                         db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
-                         db.Column('followed_id', db.Integer, db.ForeignKey('user.id')))
-
-    followed = db.relationship('User', secondary=followers,
-                               primaryjoin=(followers.c.follower_id == id),
-                               secondaryjoin=(followers.c.followed_id == id),
-                               backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
+    # followers = db.Table('followers', db.Column('follower_id', db.Integer, db.ForeignKey('user.id')), db.Column('followed_id', db.Integer, db.ForeignKey('user.id')))
+    #
+    # followed = db.relationship('User', secondary=followers,
+    #                            primaryjoin=(followers.follower_id == id),
+    #                            secondaryjoin=followers.__table__,
+    #                            backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
 
 
-    def follow(self, user):
-        # if not self.is_following(user):
-            self.followed.append(user)
-
-    def unfollow(self, user):
-        # if self.is_following(user):
-            self.followed.remove(user)
-
+    # def follow(self, user):
+    #     if not self.is_following(user):
+    #         self.followed.append(user)
+    #
+    # def unfollow(self, user):
+    #     if self.is_following(user):
+    #         self.followed.remove(user)
+    #
     # def is_following(self, user):
-    #     return self.followed.filter(
-    #         self.followers.c.followed_id == user.id).count() > 0
+    #     return self.followed.filter(self.followers.c.followed_id == user.id).count() > 0
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -71,8 +68,8 @@ class Post(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
     username = db.Column(db.String(64), index=True, unique=True)
 
-    #someone_likes_it = db.Column('like', db.Integer, db.ForeignKey('user.id'))
-    #post_liked_by = db.Column('likedby1', db.Integer, db.ForeignKey('user.id')))
+    # someone_likes_it = db.Column('like', db.Integer, db.ForeignKey('user.id'))
+    # post_liked_by = db.Column('likedby1', db.Integer, db.ForeignKey('user.id'))
 
 
 
